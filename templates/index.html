@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <script>
+        $(document).ready(function(){
+            $("div").click(function(){
+            $(this).hide();
+            });
+        });
+    //     function showAns() {
+    //   document.getElementById("answerH").style.display = "block";
+    //     }
+
+    </script> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Trivia Quiz</title>
+</head>
+<body>
+    <div>
+        <form action="/filterQuiz" id="topic_container" method="POST">
+            <h3>Generate Quiz</h3>
+            <label for="topic">Topic to generate question</label>
+            <select name="topic" id="topic">
+            {% for topic in topics %}
+                    <option>{{topic}}</option>
+            {% endfor %}
+            </select>
+            <label for="difficulty">Difficulty of Quiz</label>
+            <select name="difficulty" id="difficulty">
+            {% for difficulty in difficulties %}
+                    <option>{{difficulty}}</option>
+            {% endfor %}
+            </select>
+            <label for="nofq">Number of Questions</label>
+            <select name="nofq" id="nofq">
+            {% for numberQ in numberOfQuestions %}
+                    <option>{{numberQ}}</option>
+            {% endfor %}
+            </select>
+            <input onClick="filterQuiz()" type="submit" value="Generate Quiz">
+        </form>
+    </div>
+    <div class="container">
+
+        <img src="../static/trivia.jpg" alt="Jeopardy" class="logo">
+
+        <!--todo - message-->
+        <!-- <input id="answerForm" type="text" />
+        <input type="button" onclick = "showAnsButton()" value="Submit"/> -->
+        <form action="/", onsubmit = "showAnsButton()" id="answerForm" method="POST">
+            <div class="form-group">
+                <h3>Topic</h3>
+                <div id="topicDiv">
+                </div>
+                <h3>Difficulty</h3>
+                <div id="difficultyDiv">
+                </div>
+                <h3>Question</h3>
+                <div id="questionDiv">
+                </div>
+                <h3>Choices</h3>
+                <div id="choicesDiv">
+                    <button onClick="checkAnswer('buttonA')" class="mcButton" id="buttonA"></button>
+                    <button onClick="checkAnswer('buttonB')" class="mcButton" id="buttonB"></button>
+                    <button onClick="checkAnswer('buttonC')" class="mcButton" id="buttonC"></button>
+                    <button onClick="checkAnswer('buttonD')" class="mcButton" id="buttonD"></button>
+                </div>
+                <div id="answerDiv">
+                <h3>Correct Answer</h3>
+                </div>
+                <p> {{ message }} </p> 
+                <div>
+                </div>
+            </div>
+            <div>
+                <form>
+                    <input onClick="getNextQuestion()" type="submit" value="Next Question" id="nextQuestion"/>
+                </form>
+            </div>
+        </form>
+        <div id="score">
+            <h3>Score</h3>
+            <h4>Answers Correct</h4>
+            <h4>Out of</h4>
+
+        </div>
+        <!-- {% if message %}
+        <p class="message">{{ message | safe }}</p>
+        {% endif %} -->
+
+    </div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script>
+    // $('button').click(function() {
+    //     location.reload();
+    // });
+
+    let triviaQ=null
+    function reload() {
+        location.reload();
+    }
+
+    function filterQuiz() {
+        event.preventDefault();    // prevent page from refreshing
+
+        var form = document.getElementById("topic_container")
+
+        var topic_value = document.getElementById('topic').value;            
+        var difficulty_value = document.getElementById('difficulty').value;
+
+        var quizArray = {};
+        var currentIndex = 0;
+
+        $.ajax({
+            url: '/filterQuiz',
+            type: 'POST',
+            datatype: 'json',
+            headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            data: JSON.stringify({'topic': topic_value, 'difficulty': difficulty_value}),
+
+            success: function(response) {
+
+            trivia=JSON.parse(JSON.stringify(response))
+            triviaQ=JSON.parse(JSON.stringify(response)).questions
+            quizArray=JSON.parse(JSON.stringify(response))
+
+            document.getElementById('topicDiv').innerHTML = trivia.topic
+            document.getElementById('difficultyDiv').innerHTML = trivia.difficulty
+            document.getElementById('questionDiv').innerHTML = trivia.questions[0]['choices'][0]
+
+            correctAnswer = trivia.questions[0]['answer']['correctAnswer']
+
+            questions = JSON.parse(JSON.stringify(response)).questions
+
+            document.getElementById('buttonA').innerHTML = trivia.questions[0]["choices"][1]
+            document.getElementById('buttonB').innerHTML = trivia.questions[0]['choices'][2]
+            document.getElementById('buttonC').innerHTML = trivia.questions[0]['choices'][3]
+            document.getElementById('buttonD').innerHTML = trivia.questions[0]['choices'][4]
+
+            },
+                error: function(error) {
+                    console.log(error);
+            }
+        });
+    }
+
+    function getNextQuestion() {
+
+        event.preventDefault()
+
+        triviaQ = triviaQ.slice(1)
+
+        document.getElementById('topicDiv').innerHTML = trivia.topic
+        document.getElementById('difficultyDiv').innerHTML = trivia.difficulty
+        document.getElementById('questionDiv').innerHTML = trivia.questions[0]['choices'][0]
+
+        correctAnswer = trivia.answer
+
+        document.getElementById('buttonA').innerHTML = trivia.questions[0]["choices"][1]
+        document.getElementById('buttonB').innerHTML = trivia.questions[0]['choices'][2]
+        document.getElementById('buttonC').innerHTML = trivia.questions[0]['choices'][3]
+        document.getElementById('buttonD').innerHTML = trivia.questions[0]['choices'][4]
+
+        document.getElementById('nextQuestion').disabled=true
+
+        document.getElementById('buttonA').style.backgroundColor="#3873ca";
+        document.getElementById('buttonB').style.backgroundColor="#3873ca";
+        document.getElementById('buttonC').style.backgroundColor="#3873ca";
+        document.getElementById('buttonD').style.backgroundColor="#3873ca";
+
+        var mcButtons = document.getElementsByClassName('mcButton')
+
+        for(var i=0; i<mcButtons.length; i++) { 
+            mcButtons[i].disabled=false
+        }
+
+        // when button pressed the array storing the questions is accessed and next question is pulled
+    }
+
+    function checkAnswer(buttonId) {
+        event.preventDefault();
+
+        correctAnswer = document.getElementById('answerDiv').innerHTML = correctAnswer
+
+        option = document.getElementById(buttonId).innerHTML
+
+        if(correctAnswer == option) {
+            document.getElementById(buttonId).style.backgroundColor="#11BB00";
+        } else {
+            document.getElementById(buttonId).style.backgroundColor="#BB3300";
+        }
+
+        document.getElementById('nextQuestion').disabled=false
+        var mcButtons = document.getElementsByClassName('mcButton')
+
+        for(var i=0; i<mcButtons.length; i++) { 
+            mcButtons[i].disabled=true
+        }
+
+    }
+
+    function showAns() {
+      document.getElementById("answerH").style.display = "block";
+    }
+    function showAnsButton() {
+        document.getElementById("showAnswer").style.display = "block";
+        return false;
+    }
+
+    // var form = document.getElementById("")
+    var answerButton = document.getElementById("answerForm");
+    var showAnswerButton = document.getElementById("showAnswer");
+    var submitAnswerButton = document.getElementById("submitAnswerButton")
+    answerButton.addEventListener("click",function(e){ 
+        showAnswerButton.style.display = "block"
+        // submitAnswerButton.style.display = "none"
+        // e.preventDefault();
+    });
+
+    class Question {
+    constructor(id, question, topic) {
+        this.id = id;
+        this.question = question;
+        this.topic = topic;
+    }
+
+    // Method to start the car's engine
+    startEngine() {
+        this.engineStatus = 'on';
+        console.log('Engine is now running.');
+    }
+}
+
+</script>
+</html>

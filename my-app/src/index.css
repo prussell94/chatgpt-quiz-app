@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswalds:wght@100;400&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Oswalds', sans-serif;
+  background-color: rgb(161, 129, 88);
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr; /* Three rows with equal height */
+  grid-template-columns: repeat(2, 1fr);
+  /* display: flex; */
+  position: absolute;
+  top: 0px;
+  left: 400px;
+  max-width: 500px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid rgb(180, 70, 98);
+  background-color: rgb(76, 93, 170);
+  padding: 30px;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+#question-header {
+  grid-column: 1 / span 2; /* Spanning the entire width */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 200px;
+}
+
+.filter {
+  display: flex;
+  max-width: 300px;
+  margin: 30px;
+  overflow: auto;
+  min-height: 300px;
+  border: 1px solid rgb(180, 70, 98);
+  background-color: rgb(76, 93, 170);
+  padding: 30px;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+.filter form {
+  flex: 1; /* Allow the form to grow and take up all available space */
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-options select {
+  min-width: 200px;
+}
+
+.filter .filter-row {
+  margin-bottom: 10px; /* Add some space between rows */
+}
+
+.filter form button {
+  margin-top: auto; /* Push the button to the bottom */
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+label {
+  margin-right: 10px; /* Adjust spacing between label and select/input */
+}
+
+select,
+input {
+  flex: 1; /* Take up remaining space in row */
+}
+
+#generateQuizButton {
+  background-color: aqua;
+}
+
+#opening-container {
+  background-color: rgb(161, 129, 88);
+  grid-column: 1 / span 2; /* Spanning the entire width */
+
+}
+
+.mcContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.next-question {
+  height: 50px;
+  width: 200px;
+  margin-top: 20px;
+  background-color: rgb(163, 143, 26);
+}
+
+.mcOptions {
+  justify-content: space-between;
+  background-color: rgb(161, 129, 88);
+  height: 60px;
+  width:150px;
+  margin-top: 5px;
+  margin-right: 15px;
+}
+
+.buttonDiv {
+  /*demo*/
+  margin-bottom: 10px;
+}
+
+.mcOption {
+  background-color: lightsteelblue;
+  min-width: 200px;
+  min-height: 40px;
+  margin-right: 10px;
+  color: blue
+}
+
+.btn {
+  display: block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.task {
+  background: #f4f4f4;
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.task.reminder {
+  border-left: 5px solid green;
+}
+
+.task h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-form {
+  margin-bottom: 40px;
+}
+
+.form-control {
+  margin: 20px 0;
+}
+
+.form-control label {
+  display: block;
+}
+
+.form-control input {
+  width: 100%;
+  height: 40px;
+  margin: 5px;
+  padding: 3px 7px;
+  font-size: 17px;
+}
+
+.form-control-check {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-control-check label {
+  flex: 1;
+}
+
+.form-control-check input {
+  flex: 2;
+  height: 20px;
+}
+
+footer {
+  margin-top: 30px;
+  text-align: center;
+}
