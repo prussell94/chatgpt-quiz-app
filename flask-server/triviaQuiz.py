@@ -3,12 +3,13 @@ import json
 from openai import OpenAI
 
 class Question():
-    def __init__(self, question_id, question, choices, topic, answer):
+    def __init__(self, question_id, question, choices, topic, answer, difficulty):
         self.question_id=question_id
         self.question=question
         self.choices=choices
         self.topic=topic
         self.answer=answer
+        self.difficulty=difficulty
 
     def to_json(self):
         return {
@@ -16,7 +17,8 @@ class Question():
             "question": self.question,
             "choices": self.choices,
             "topic": self.topic,
-            "answer": self.answer.to_json()  # Convert answer to JSON
+            "answer": self.answer.to_json(),  # Convert answer to JSON
+            "difficulty": self.difficulty
         }
     
     def set_choices(self, choices):
@@ -26,7 +28,7 @@ class Question():
         self._answer=answer
 
     def grabQuestionsFromChatGPT(difficulty, topic):
-        client = OpenAI(api_key="")
+        client = OpenAI(api_key="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")
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
@@ -34,7 +36,6 @@ class Question():
             {"role": "user", "content": "Please generate a multiple choice question of very " +difficulty+ " difficulty relating to the topic of " + topic}
         ])
         response = completion.choices[0].message.content
-        print(response)
         return response
     
     def mockGrabQuestionsFromChatGPT(difficulty, topic):
@@ -44,12 +45,8 @@ class Question():
         # Use re.split() with a regular expression pattern
         result = re.split(r'\s*(?:A\)|B\)|C\)|D\))\s*', question)
 
-        print(result)
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
-
-        print("result --- parse choice")
-        print(result)
         # options= question.split("?")[1].split(")")
         return result
     
@@ -70,7 +67,7 @@ class Answer():
         self._correctAnswer=correctAnswer
 
     def grabAnswerFromChatGPT(question):
-        client = OpenAI(api_key="")
+        client = OpenAI(api_key="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")
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
@@ -78,7 +75,6 @@ class Answer():
                 {"role": "user", "content": question}
             ])
         response = completion.choices[0].message.content
-        print(response)
         return response
     
     def mockGrabAnswerFromChatGPT(question):
@@ -108,20 +104,13 @@ class Quiz():
 
         result = re.split(r'\s*(?:A\)|B\)|C\)|D\))\s*', answerString)
 
-        print(result)
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
 
-        print("---result")
-        print(result)
-        print("------choices------")
-        print(choices)
         questions=[]
         answers=[]
 
         for i in range(0, numberOfQuestions):
-            print("number of questions " + str(numberOfQuestions))
-
             ##mock behaviour
             mockAnswer=Answer(result[0])
             mockQuestion=Question(i+1, questionString, choices, "movies", mockAnswer)
@@ -138,22 +127,14 @@ class Quiz():
         answers=[]
 
         for i in range(0, numberOfQuestions):
-            print("number of questions " + str(numberOfQuestions))
 
             questionString=Question.grabQuestionsFromChatGPT(difficulty, topic)
 
             choices=Question.parseChoice(questionString)
             answer=Answer(Answer.grabAnswerFromChatGPT(questionString))
-            question=Question(1, questionString, choices, topic, answer)
+            question=Question(1, questionString, choices, topic, answer, difficulty)
             questions.append(question)
             answers.append(answer)
-
-            ## actual behaviour
-            # question = Question(i, mockQuestion, Question.parseChoice(mockQuestion), "movies")
-            # answer=Answer(correctAnswer=mockAnswer)
-            
-            # questions.append(question)
-            # answers.append(answer)
 
         return questions, answers
     
