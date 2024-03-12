@@ -28,7 +28,7 @@ class Question():
         self._answer=answer
 
     def grabQuestionsFromChatGPT(difficulty, topic):
-        client = OpenAI(api_key="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")
+        client = OpenAI(api_key="")
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
@@ -67,7 +67,7 @@ class Answer():
         self._correctAnswer=correctAnswer
 
     def grabAnswerFromChatGPT(question):
-        client = OpenAI(api_key="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")
+        client = OpenAI(api_key="")
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
