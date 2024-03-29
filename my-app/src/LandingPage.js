@@ -13,13 +13,8 @@ import React from 'react';
 import { Link, Route, Routes, BrowserRouter as Router, useLocation } from 'react-router-dom';
 import QuizApp from './Components/MultipleChoiceQuiz';
 import NavigationBar from './Components/NavigationBar';
-import HistoricalOrderingQuiz from './Components/HistoricalOrderingQuiz.js';
-import DraggableApp from './Components/DraggableQuiz';
 
-import NewDraggableQuiz from './Components/NewDraggableQuiz';
-import SimpleDnD from './Components/SimpleDnD';
 import SortableQuiz from './Components/SortableQuiz';
-import SortableComponent from './Components/SortableComponent';
 
 
 const Home = () => <h1>Home Page</h1>;
@@ -35,8 +30,6 @@ const InitialPage = () => {
             <hr />
                 <Routes location={location}>
                     <Route path="/MultipleChoiceQuiz" element={<QuizApp />} />
-                    {/* <Route path="/HistoricalOrderingQuiz" element={<DraggableApp />} /> */}
-                    {/* <Route path="/HistoricalOrderingQuiz" element={<NewDraggableQuiz />} /> */}
                     <Route path="/HistoricalOrderingQuiz" element={<SortableQuiz />} />
 
 

@@ -10,7 +10,6 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 import { Column } from "./Column.js";
-import { Locations } from "./Locations.js";
 
 import "../App.css";
 
