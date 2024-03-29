@@ -1,25 +1,35 @@
 import PropTypes from 'prop-types'
+import { useLocation } from 'react-router-dom'
+import Button from './Button'
 
-const Header = ( {topic, difficulty, question} ) => {
+const Header = ({ title, onAdd, showAdd }) => {
+  // const location = useLocation()
+
   return (
-    <header>
-      <h1>ChatGPT Trivia</h1>
-      <h3>Topic</h3>
-      {topic}
-      <h3>Difficulty</h3>
-      {difficulty}
-      <h3>Question</h3>
-      {question}
+    <header className='header'>
+      <h1>{title}</h1>
+      {/* {location.pathname === '/' && ( */}
+        <Button
+          color={showAdd ? 'red' : 'green'}
+          text={showAdd ? 'Close' : 'Add'}
+          onClick={onAdd}
+        />
     </header>
   )
 }
 
 Header.defaultProps = {
-    title: "ChatGPT"
+  title: 'Task Tracker',
 }
 
-Header.prototype = {
-    title: PropTypes.String
+Header.propTypes = {
+  title: PropTypes.string.isRequired,
 }
+
+// CSS in JS
+// const headingStyle = {
+//   color: 'red',
+//   backgroundColor: 'black',
+// }
 
 export default Header

@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,154 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+.App {
+  text-align: center;
+  display: grid;
+  gap: 10px;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 1.5vmin);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.characters {
+  list-style: none;
+  padding-left: 0;
+}
+
+.characters li {
+  display: flex;
+  align-items: center;
+  border: solid 2px #d0d0d0;
+  border-radius: .2em;
+  padding: .5em .8em .5em .5em;
+  margin-bottom: 1em;
+}
+
+.characters p {
+  max-width: none;
+  font-weight: bold;
+  margin: 0;
+}
+
+.eventList {
+  border: #61dafb;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 300px));
+  gap: 10px;
+}
+
+.eventCard {
+  min-width: 100px;
+  min-height: 100px;
+  border:red;
+  background-color: aquamarine;
+  margin: 20px;;
+}
+
+.draggableEvent {
+  /* min-width: 100px;
+  min-height: 100px;
+  border:red;
+  background-color: navajowhite;
+  margin: 20px;;
+  position: relative; */
+
+  font-weight: bold;
+  background-color: navajowhite;
+  margin: 20px;;
+  position: relative;
+  min-height: 100px;
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  /* align-items: center; */
+  /* height: 100vh; */
+
+  /* display: flex;
+  justify-content: center; /* Center items horizontally */
+  /* align-items: center; /* Center items vertically */
+  /* height: 100vh;  */
+}
+
+.draggableEventList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+}
+
+.locationsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+}
+
+.location {
+  min-width: 100px;
+  min-height: 100px;
+  border:red;
+  background-color: navajowhite;
+  margin: 20px;;
+}
+
+.addEventButton {
+  background-color: darkblue;
+  padding: 5px;
+  margin-left: 20px;
+  color: white;
+}
+
+.correctAnswer {
+  background-color: green;
+}
+
+.incorrectAnswer {
+  background-color: red;
+}
+
+.checkAnswerBtn {
+  width: 200px;
+  height: 30px;
+  background-color: #61dafb;
+}
+
+.historyBtn {
+  width: 130px;
+  margin-left: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+  height: 100vh; /* Set the height of the container, adjust as needed */
+}
+
+/* .centered {
+  text-align: center; /* Center text horizontally */
+/* }  */
+
+.answerDate {
+  color: white;
+  margin-bottom: 20px;
+  position: absolute;    
+  bottom: -20px;
+  margin-left: 10px;
+  text-align: center; /* Center text horizontally */
 }
