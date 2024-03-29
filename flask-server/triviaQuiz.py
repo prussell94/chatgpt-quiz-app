@@ -16,7 +16,7 @@ class Question():
             "question": self.question,
             "choices": self.choices,
             "topic": self.topic,
-            "answer": self.answer.to_json()  # Convert answer to JSON
+            "answer": self.answer.to_json()
         }
     
     def set_choices(self, choices):
@@ -26,7 +26,10 @@ class Question():
         self._answer=answer
 
     def grabQuestionsFromChatGPT(difficulty, topic):
-        client = OpenAI(api_key="")
+        with open('../api-key.txt', 'r') as file:
+            content = file.read()
+            api_key=content
+        client = OpenAI(api_key=api_key)
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
@@ -44,19 +47,15 @@ class Question():
         # Use re.split() with a regular expression pattern
         result = re.split(r'\s*(?:A\)|B\)|C\)|D\))\s*', question)
 
-        print(result)
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
 
-        print("result --- parse choice")
-        print(result)
         # options= question.split("?")[1].split(")")
         return result
     
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
-
 
 class Answer():
     def __init__(self, correctAnswer, userResponse=''):
@@ -70,7 +69,11 @@ class Answer():
         self._correctAnswer=correctAnswer
 
     def grabAnswerFromChatGPT(question):
-        client = OpenAI(api_key="")
+        with open('../api-key.txt', 'r') as file:
+            # Read the entire content of the file
+            content = file.read()
+            api_key=content
+        client = OpenAI(api_key=api_key)
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
@@ -108,19 +111,13 @@ class Quiz():
 
         result = re.split(r'\s*(?:A\)|B\)|C\)|D\))\s*', answerString)
 
-        print(result)
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
 
-        print("---result")
-        print(result)
-        print("------choices------")
-        print(choices)
         questions=[]
         answers=[]
 
         for i in range(0, numberOfQuestions):
-            print("number of questions " + str(numberOfQuestions))
 
             ##mock behaviour
             mockAnswer=Answer(result[0])
@@ -138,7 +135,6 @@ class Quiz():
         answers=[]
 
         for i in range(0, numberOfQuestions):
-            print("number of questions " + str(numberOfQuestions))
 
             questionString=Question.grabQuestionsFromChatGPT(difficulty, topic)
 
@@ -147,13 +143,6 @@ class Quiz():
             question=Question(1, questionString, choices, topic, answer)
             questions.append(question)
             answers.append(answer)
-
-            ## actual behaviour
-            # question = Question(i, mockQuestion, Question.parseChoice(mockQuestion), "movies")
-            # answer=Answer(correctAnswer=mockAnswer)
-            
-            # questions.append(question)
-            # answers.append(answer)
 
         return questions, answers
     

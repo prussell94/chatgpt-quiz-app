@@ -47,13 +47,7 @@ class User_Answer(db.Model):
 
 
 @app.route('/')
-# def fetch_bots_names():
-#     bot_names = [bot.name for bot in Bot.query.all()]
-#     return jsonify({
-#         'ok': True, 
-#         'msg':'Success',
-#         'data': bot_names
-#     })
+
 def index():
 
     topics = ['geography', 'history', 'sports', 'movies']
@@ -66,60 +60,11 @@ def index():
 
     return render_template('index.html', topics=topics, difficulties=difficulties, numberOfQuestions=numberOfQuestions)
 
-# def index():
-#     # Connect to the database
-#     conn = psycopg2.connect(database="test_db",
-#                             user="root",
-#                             password="root",
-#                             host="localhost", port="5432")
-  
-#     # create a cursor
-#     cur = conn.cursor()
-  
-#     # Select all products from the table
-#     cur.execute('''SELECT
-# 	* FROM clues OFFSET floor(random() * (
-# 		SELECT
-# 			COUNT(*)
-# 			FROM clues))
-#     LIMIT 1;''')
-  
-#     # # Fetch the data
-#     data = cur.fetchall()
-
-#     # Select all products from the table
-#     cur.execute('''SELECT DISTINCT * from seasons
-#         order by start_date;''')
-  
-#     # Fetch the data
-#     seasons = cur.fetchall()
-
-#     cur.execute('''select DISTINCT value from clues order by value asc;''')
-
-#     clue_values = cur.fetchall()
-
-#     # cur.execute('''select distinct categorytitle from clues group by categorytitle order by categorytitle desc;''')
-#     cur.execute('''select distinct categorytitle from clues order by categorytitle desc;''')
-
-#     categories = cur.fetchall()
-  
-#     # # close the cursor and connection
-#     cur.close()
-#     conn.close()
-
-#     session['answer_data'] = data
-#     session['seasons'] = seasons
-#     session['clue_values'] = clue_values
-#     return render_template('index.html', data=data, seasons=seasons, clue_values=clue_values, categories=categories)
-    # return render_template('index.html', data=data)
-
-
 @app.route('/filterQuiz', methods=['POST', 'GET'])
 def handle_user_data():
     if request.method == 'POST':
         # Get the data from the JSON body of the request
         data = request.get_json()
-        print(data)
         
         topic = data.get('topic')
         difficulty = data.get('difficulty')
@@ -132,9 +77,6 @@ def handle_user_data():
             'difficulty': difficulty,
         }
 
-        # question = grabQuestionsFromChatGPT(difficulty, topic)
-        # answer = grabAnswerFromChatGPT(question)
-
         question=Question.mockGrabQuestionsFromChatGPT(difficulty, topic)
         answer=Answer.mockGrabAnswerFromChatGPT(question)
 
@@ -143,129 +85,21 @@ def handle_user_data():
         # questions, answers = Quiz.getMultipleQuestionsAndAnswers(numberOfQuestions, difficulty, topic)
         questions, answers = Quiz.mockGetMultipleQuestionsAndAnswers(numberOfQuestions)
 
-
-        # for i in range(0, len(questions)):
-        #     choices = parseChoice(question)[1:]
-        #     questions[i].set_choices(choices)
-
-        print("questions")
-        print(questions)
-
-        print("answers")
-        print(answers)
-
-        print("questions")
-        print(questions)
-
-
-
         questions=[json.loads(question.toJSON()) for question in  questions]
-        print("new questions")
-        print(questions)
+
         answers=[json.loads(answer.toJSON()) for answer in answers]
-        [print(answer) for answer in answers]
-        print("---help")
 
         questionsAndAnswers=[questions, answers]
 
         answer=Question.parseChoice(answer)
 
-        print(questionsAndAnswers)
-
-        # optionA=choices[0]
-        # optionB=choices[1]
-        # optionC=choices[2]
-        # optionD=choices[3]
-
-        print("----sending----")
-
         return {"topic": topic, "difficulty": difficulty, "questions": questions, "answer": answer[0]}
-
-        
-        # response.headers["Content-Type"] = "application/json"
-        # Return the response as JSON
-        # return {"topic": topic, "difficulty": difficulty, "question": question, "answer": answer[0], "optionA": optionA, "optionB": optionB, "optionC": optionC, "optionD": optionD}
-    
-# @app.route('/filterQuiz', methods=['POST'])
-# def filter():
-#     topic=request.form['topic']
-#     difficulty=request.form['difficulty']
-#     numberOfQuestions=request.form['nofq']
-
-#     print("--topic----")
-#     print(topic)
-
-#     print(topic, difficulty, numberOfQuestions)
-#     return render_template('index.html', topic=topic, difficulty=difficulty, numberOfQuestions=numberOfQuestions)
-
-
-        # Connect to the database
-    # conn = psycopg2.connect(database="test_db",
-    #                         user="root",
-    #                         password="root",
-    #                         host="localhost", port="5432")
-  
-    # # create a cursor
-    # cur = conn.cursor()
-  
-    # # Select all products from the table
-    # cur.execute('''SELECT
-	# * FROM clues OFFSET floor(random() * (
-	# 	SELECT
-	# 		COUNT(*)
-	# 		FROM clues
-    #             WHERE ))
-    # LIMIT 1;''')
-  
-    # # Fetch the data
-    # data = cur.fetchall()
-  
-    # # close the cursor and connection
-    # cur.close()
-    # conn.close()
-
-# @app.route('/filter', methods=['POST'])
-# def filter():
-#     from_season=request.form['from season']
-#     to_season=request.form['to season']
-
-#         # Connect to the database
-#     conn = psycopg2.connect(database="test_db",
-#                             user="root",
-#                             password="root",
-#                             host="localhost", port="5432")
-  
-#     # create a cursor
-#     cur = conn.cursor()
-  
-#     # Select all products from the table
-#     cur.execute('''SELECT
-# 	* FROM clues OFFSET floor(random() * (
-# 		SELECT
-# 			COUNT(*)
-# 			FROM clues
-#                 WHERE ))
-#     LIMIT 1;''')
-  
-#     # Fetch the data
-#     data = cur.fetchall()
-  
-#     # close the cursor and connection
-#     cur.close()
-#     conn.close()
-
 
 @app.route('/', methods=['POST'])
 def submit():
     data = session.get("answer_data",None)
     if request.method == 'POST':
-        # answer= request.form['answer']
-        # correctAnswer = data[0][-1]
-        # question = data[0][-2]
-        # question_id = data[0][0]
-        # # answer=answer.lower().replace('the ', '')
-        # correctAnswer=correctAnswer.lower().replace('the ', '').replace('<', '')
-        # isAnswerCorrect = answer == correctAnswer
+
         isAnswerCorrect=True
         # category = data[0][5]
 
@@ -277,12 +111,6 @@ def submit():
   
         # create a cursor
         cur = conn.cursor()
-
-        # cur.execute(
-        #     "INSERT INTO user_answer (user_answer, given_question, user_id, question_id, correct_answer, is_user_correct, category) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-        #       (answer, question, 1, question_id, correctAnswer, isAnswerCorrect, category))
-    
-        # conn.commit()
 
         if(isAnswerCorrect):
             return render_template("index.html", message='Correct!', data=data)
