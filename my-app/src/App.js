@@ -1,6 +1,7 @@
 // export default App
 import React, { useState, useEffect } from 'react';
 import QuizGenerator from './Components/QuizGenerator';
+import axios from 'axios';
 
 const QuizApp = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -28,6 +29,18 @@ const QuizApp = () => {
       if (isCorrect) {
         setTotalCorrectAnswers(totalCorrectAnswers + 1);
       }
+      
+    }
+  };
+
+  const addQuestionToDatabase = async () => {
+    // e.preventDefault();
+    try {
+      await axios.post('/addQuestionToDatabase', 
+      { questionAnswered: currentQuestion });
+      console.log('Data added successfully');
+    } catch (error) {
+      console.error('Error adding data', error);
     }
   };
 
@@ -50,20 +63,12 @@ const QuizApp = () => {
   };
 
   const handleQuizGenerated = (questions) => {
-    console.log('questions------')
-    console.log(questions)
-    console.log(typeof(questions))
+
     let allQuestionsArray = [];
   
     // Parse the JSON string only if it's not empty
     if (questions) {
       let questionObject;
-      console.log("number of questions -----");
-
-      console.log("qqqq")
-      console.log(allQuestions)
-
-      console.log(questions)
 
       // setAllQuestions(questions)
 
@@ -79,8 +84,6 @@ const QuizApp = () => {
         }
 
         setAllQuestions(allQuestionsArray)
-        console.log("all questions array first entry")
-        console.log(allQuestionsArray[0])
 
       } else {
         const questionObject = JSON.parse(questions);
@@ -111,16 +114,15 @@ const QuizApp = () => {
         <>
           <div id="question-header">
           <h3>{currentQuestion?.choices[0]}</h3>
-          {/* <h3>{allQuestions[0]?.choices[0]}</h3> */}
-          {/* <h3>{questionObject.question}</h3> */}
-            {/* <h3>{currentQuestion[currentQuestionIndex]?.question}</h3> Use optional chaining to prevent errors if currentQuestion is undefined */}
           </div>
           {currentQuestion?.choices.slice(1).map((option, index) => ( // Use optional chaining here as well if needed
               <div class="buttonDiv">
                 <button class="mcOption"
                   key={index}
                   style={{ backgroundColor: optionColors[index] }}
-                  onClick={() => handleOptionClick(index)}
+                  onClick={() => {handleOptionClick(index);
+                     addQuestionToDatabase();
+                  }}
                   disabled={isAnswered}
                 >
                   {option}
