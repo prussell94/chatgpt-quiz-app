@@ -1,5 +1,6 @@
 import re
 import json
+from openai import OpenAI
 
 class Question():
     def __init__(self, question_id, question, choices, topic, answer):
@@ -38,8 +39,6 @@ class Question():
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
 
-        print("result --- parse choice")
-        print(result)
         # options= question.split("?")[1].split(")")
         return result
     
@@ -89,19 +88,13 @@ class Quiz():
 
         result = re.split(r'\s*(?:A\)|B\)|C\)|D\))\s*', answerString)
 
-        print(result)
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
 
-        print("---result")
-        print(result)
-        print("------choices------")
-        print(choices)
         questions=[]
         answers=[]
 
         for i in range(0, numberOfQuestions):
-            print("number of questions " + str(numberOfQuestions))
 
             ##mock behaviour
             mockAnswer=Answer(result[0])
@@ -119,7 +112,6 @@ class Quiz():
         answers=[]
 
         for i in range(0, numberOfQuestions):
-            print("number of questions " + str(numberOfQuestions))
 
             questionString=Question.grabQuestionsFromChatGPT(difficulty, topic)
 
@@ -128,13 +120,6 @@ class Quiz():
             answer=Answer(Answer.grabAnswerFromChatGPT(questionString))
             questions.append(question)
             answers.append(answer)
-
-            ## actual behaviour
-            # question = Question(i, mockQuestion, Question.parseChoice(mockQuestion), "movies")
-            # answer=Answer(correctAnswer=mockAnswer)
-            
-            # questions.append(question)
-            # answers.append(answer)
 
         return questions, answers
     

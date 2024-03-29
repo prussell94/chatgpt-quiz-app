@@ -96,13 +96,6 @@ def add_data():
 #     # Retrieve form data from the request
 #     form_data = request.json  # Assuming JSON data is sent from the frontend
     
-#     # Process the form data (e.g., save to database)
-#     # For demonstration purposes, let's just echo back the received data
-#     response = {
-#         'message': 'Form data received successfully',
-#         'data': form_data
-#     }
-    
     # Return a JSON response
     # return jsonify(response)
 

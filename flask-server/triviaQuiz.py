@@ -28,7 +28,10 @@ class Question():
         self._answer=answer
 
     def grabQuestionsFromChatGPT(difficulty, topic):
-        client = OpenAI(api_key="")
+        with open('../api-key.txt', 'r') as file:
+            content = file.read()
+            api_key=content
+        client = OpenAI(api_key=api_key)
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,
@@ -54,7 +57,6 @@ class Question():
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
-
 class Answer():
     def __init__(self, correctAnswer, userResponse=''):
         self.userResponse=userResponse
@@ -67,7 +69,11 @@ class Answer():
         self._correctAnswer=correctAnswer
 
     def grabAnswerFromChatGPT(question):
-        client = OpenAI(api_key="")
+        with open('../api-key.txt', 'r') as file:
+            # Read the entire content of the file
+            content = file.read()
+            api_key=content
+        client = OpenAI(api_key=api_key)
 
         model_id = "gpt-3.5-turbo"
         completion = client.chat.completions.create(model=model_id,

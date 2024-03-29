@@ -11,13 +11,32 @@ body {
   background-color: rgb(161, 129, 88);
 }
 
+#landingPage {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 150px;
+}
+
+#main {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto 1fr;
+} 
+
+.lp-heading {
+  display: grid;
+  grid-column: 3 / span 2;
+  grid-row: 2;
+}
+
 .container {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr; /* Three rows with equal height */
   grid-template-columns: repeat(2, 1fr);
   /* display: flex; */
   position: absolute;
-  top: 0px;
+  top: 40px;
   left: 400px;
   max-width: 500px;
   margin: 30px auto;
@@ -92,7 +111,6 @@ input {
 }
 
 #opening-container {
-  background-color: rgb(161, 129, 88);
   grid-column: 1 / span 2; /* Spanning the entire width */
 
 }

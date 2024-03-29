@@ -1,6 +1,6 @@
 // export default App
 import React, { useState, useEffect } from 'react';
-import QuizGenerator from './Components/QuizGenerator';
+import QuizGenerator from './QuizGenerator';
 import axios from 'axios';
 
 const QuizApp = () => {
@@ -107,7 +107,7 @@ const QuizApp = () => {
   // let questionObject = JSON.parse(currentQuestion);
 
   return (
-<div id="main">
+<div>
     <QuizGenerator resetButtonColors={resetButtonColors} onQuizGenerated={handleQuizGenerated} />
     <div className="container">
       {quizGenerated ? (
@@ -143,5 +143,5 @@ const QuizApp = () => {
   );
 };
 
-// export default QuizApp;
+export default QuizApp;
 
