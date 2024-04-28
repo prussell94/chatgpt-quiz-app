@@ -156,6 +156,11 @@
   background-color: red;
 }
 
+.buttonDiv {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .checkAnswerBtn {
   width: 200px;
   height: 30px;
@@ -163,8 +168,10 @@
 }
 
 .historyBtn {
-  width: 130px;
+  width: 125px;
   margin-left: 20px;
+  height: 40px;
+  background-color: aqua;
 }
 
 .container {
@@ -180,9 +187,11 @@
 
 .answerDate {
   color: white;
-  margin-bottom: 20px;
+  margin-left: 10px;
+
+  /* margin-bottom: 20px;
   position: absolute;    
   bottom: -20px;
   margin-left: 10px;
-  text-align: center; /* Center text horizontally */
+  text-align: center; Center text horizontally */
 }

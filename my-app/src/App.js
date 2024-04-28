@@ -58,14 +58,6 @@ const QuizApp = () => {
     // Parse the JSON string only if it's not empty
     if (questions) {
       let questionObject;
-      console.log("number of questions -----");
-
-      console.log("qqqq")
-      console.log(allQuestions)
-
-      console.log(questions)
-
-      // setAllQuestions(questions)
 
       if(questions.length > 1) {
         const firstQuestion=questions[currentQuestionIndex];

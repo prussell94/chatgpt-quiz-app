@@ -106,56 +106,6 @@ const QuizGenerator = ({ resetButtonColors, onQuizGenerated }) => {
     });
   };
 
-  // const handleAsyncSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch('/api/submit-form', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
-
-  //     if (response.ok) {
-  //       // Handle success, e.g., show a success message
-  //       console.log('Form submitted successfully!');
-  //       const body = await response.json(); // Get the response body
-  //       console.log("response-----from-----form----submit------")
-  //       console.log(response)
-  //       // console.log(JSON.parse(body))
-  //       console.log(body)  
-  
-
-  //       // const filteredQuiz = body.filter(question => {
-  //       //     return (
-  //       //       question.topic === selectedTopic &&
-  //       //       question.difficulty === selectedDifficulty
-  //       //     );
-  //       //   })
-
-  //       console.log("can parse json?")
-  //       // console.log(JSON.parse(body)['question'])
-  //       // Shuffle the filtered questions array
-  //       // const shuffledQuiz = [...filteredQuiz].sort(() => Math.random() - 0.5);
-  
-  //       // const selectedQuestions = shuffledQuiz.slice(0, selectedNumberOfQuestions);
-  //       setQuiz(body);
-  //       setReturnedQuestions(body);
-  //       setQuizGenerated(true);
-  //       onQuizGenerated(body);
-  //       resetButtonColors();
-
-  //   } else {
-  //       // Handle error responses
-  //       console.error('Error submitting form response not ok:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting form:', error.message);
-  //   }
-  // };
-
   const setSelectedSelection = (name, value) => {
     if(name === 'topic') {
         setSelectedTopic(value)
