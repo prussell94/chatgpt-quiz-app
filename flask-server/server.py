@@ -336,7 +336,7 @@ def submit_form():
         question_json = onlyQuestions.to_json()
         question_json_d = json.dumps(question_json)
         question_arr.append(question_json_d)
-        
+
     # Return a JSON response
     return jsonify(question_arr)
 
@@ -372,6 +372,26 @@ def submit_answer():
         
     # Return a JSON response
     return jsonify(answer_data)
+    
+    try:
+        cursor.execute("INSERT INTO Questions (question_topic, question_difficulty, correct_answer, question_text, options) VALUES (%s, %s, %s, %s, %s)", 
+                       (question_answered['topic'], question_answered['difficulty'], question_answered['answer']['correctAnswer'], 
+                        question_answered['question'], question_answered['choices'][1:]))
+        # cursor.execute("INSERT INTO questions (correct_answer) VALUES (%s)", (question_answered,))
+        cursor.execute("INSERT INTO Quizzes ()")
+        conn.commit()
+        return jsonify({"message": "Data added successfully"}), 201
+    except psycopg2.Error as e:
+        conn.rollback()
+        print("Error adding data:", e)
+        return jsonify({"message": "Error adding data to the database"}), 500
+    finally:
+        cursor.close()
+
+# @app.route('/api/retrieve-question', methods=['POST'])
+# def submit_form():
+#     # Retrieve form data from the request
+#     form_data = request.json  # Assuming JSON data is sent from the frontend
     
     # Return a JSON response
     # return jsonify(response)

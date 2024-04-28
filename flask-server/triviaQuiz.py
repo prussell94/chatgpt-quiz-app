@@ -3,12 +3,13 @@ import json
 from openai import OpenAI
 
 class Question():
-    def __init__(self, question_id, question, choices, topic, answer):
+    def __init__(self, question_id, question, choices, topic, answer, difficulty):
         self.question_id=question_id
         self.question=question
         self.choices=choices
         self.topic=topic
         self.answer=answer
+        self.difficulty=difficulty
 
     def to_json(self):
         return {
@@ -16,7 +17,8 @@ class Question():
             "question": self.question,
             "choices": self.choices,
             "topic": self.topic,
-            "answer": self.answer.to_json()
+            "answer": self.answer.to_json(),  # Convert answer to JSON
+            "difficulty": self.difficulty
         }
     
     def set_choices(self, choices):
@@ -37,7 +39,6 @@ class Question():
             {"role": "user", "content": "Please generate a multiple choice question of very " +difficulty+ " difficulty relating to the topic of " + topic}
         ])
         response = completion.choices[0].message.content
-        print(response)
         return response
     
     def mockGrabQuestionsFromChatGPT(difficulty, topic):
@@ -49,7 +50,6 @@ class Question():
 
         # Filter out empty strings from the result
         result = [part.strip() for part in result if part]
-
         # options= question.split("?")[1].split(")")
         return result
     
@@ -81,7 +81,6 @@ class Answer():
                 {"role": "user", "content": question}
             ])
         response = completion.choices[0].message.content
-        print(response)
         return response
     
     def mockGrabAnswerFromChatGPT(question):
@@ -118,7 +117,6 @@ class Quiz():
         answers=[]
 
         for i in range(0, numberOfQuestions):
-
             ##mock behaviour
             mockAnswer=Answer(result[0])
             mockQuestion=Question(i+1, questionString, choices, "movies", mockAnswer)
@@ -140,7 +138,7 @@ class Quiz():
 
             choices=Question.parseChoice(questionString)
             answer=Answer(Answer.grabAnswerFromChatGPT(questionString))
-            question=Question(1, questionString, choices, topic, answer)
+            question=Question(1, questionString, choices, topic, answer, difficulty)
             questions.append(question)
             answers.append(answer)
 
