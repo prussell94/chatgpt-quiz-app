@@ -17,6 +17,7 @@ export const Event = ({ color, id, title, task, showAnswer }) => {
   const monthName = date.toLocaleString('default', { month: 'long' });
 
   return (
+    <div className="events">
     <div
       ref={setNodeRef}
       style={style}
@@ -27,8 +28,13 @@ export const Event = ({ color, id, title, task, showAnswer }) => {
       {title}
       {task.position_id}
 
-      {showAnswer && <div className="answerDate">{monthName} {date.getDate()}, {date.getFullYear()}</div>}
     </div>
+    <div className="trueAnswer">
+    {showAnswer && <div className="answerDate">{monthName} {date.getDate()}, {date.getFullYear()}</div>}
+
+    </div>
+    </div>
+
     
   );
 };

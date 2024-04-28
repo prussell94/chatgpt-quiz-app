@@ -45,9 +45,7 @@ class User_Answer(db.Model):
         self.is_user_correct = is_user_correct
         self.category = category
 
-
 @app.route('/')
-
 def index():
 
     topics = ['geography', 'history', 'sports', 'movies']

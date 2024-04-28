@@ -15,7 +15,7 @@ import {
   }
 
 
-  export const Column = ({ id, tasks, setTasks, showAnswer }) => {
+  export const Column = ({ id, tasks, setTasks, showAnswer}) => {
 
     console.log("tasks------")
     console.log(tasks);

@@ -70,8 +70,6 @@ const QuizApp = () => {
     if (questions) {
       let questionObject;
 
-      // setAllQuestions(questions)
-
       if(questions.length > 1) {
         const firstQuestion=questions[currentQuestionIndex];
         const questionObject = JSON.parse(firstQuestion);
